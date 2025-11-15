@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hexidian – Memory Palace KMS</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <h1>Hexidian</h1>
+          <p class="tagline">
+            Local-first knowledge cartographer – journal, formalize, review.
+          </p>
+        </div>
+        <div class="header-actions">
+          <button id="export-state">Export JSON</button>
+          <label class="import-label">
+            Import JSON
+            <input type="file" id="import-state" accept="application/json" />
+          </label>
+          <button id="reset-state" class="danger">Reset</button>
+          <button id="nations-toggle" class="ghost-btn" type="button">
+            Nations
+          </button>
+        </div>
+      </header>
+
+      <main class="map-stage">
+        <section class="map-panel">
+          <div class="panel-head">
+            <h2>Hex Map</h2>
+            <p>Tap anywhere to drop the selected hex.</p>
+          </div>
+          <div id="map-status" class="map-status"></div>
+          <div class="filter-row">
+            <input
+              id="tag-filter"
+              list="tag-filter-options"
+              placeholder="Filter by #tag"
+            />
+            <button id="tag-filter-clear" class="ghost-btn" type="button">
+              Clear
+            </button>
+          </div>
+          <datalist id="tag-filter-options"></datalist>
+          <div id="hex-map"></div>
+          <div class="unplaced-tray" id="unplaced-tray">
+            <div class="tray-head">
+              <strong>Unplaced Hexes</strong>
+              <span id="unplaced-count">0</span>
+            </div>
+            <div id="unplaced-list" class="tray-body"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="hex-overlay" class="sheet hidden" aria-hidden="true">
+      <div class="sheet-content">
+        <header class="sheet-header">
+          <h2 id="overlay-title">Hex Details</h2>
+          <button id="hex-overlay-close" class="ghost-btn" type="button">
+            Close ✕
+          </button>
+        </header>
+
+        <div class="sheet-body">
+          <div class="field-group">
+            <label for="overlay-name">Name</label>
+            <input id="overlay-name" type="text" />
+          </div>
+
+          <div class="field-row">
+            <div class="field-group stretch">
+              <label for="overlay-nation">Nation</label>
+              <select id="overlay-nation"></select>
+            </div>
+            <button id="overlay-open-nations" class="ghost-btn" type="button">
+              + Manage Nations
+            </button>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="overlay-x">X</label>
+              <input id="overlay-x" type="number" />
+            </div>
+            <div class="field-group">
+              <label for="overlay-y">Y</label>
+              <input id="overlay-y" type="number" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="overlay-content">Definition</label>
+            <textarea id="overlay-content" rows="6"></textarea>
+          </div>
+
+          <div class="srs-row">
+            <div>
+              <div class="srs-label">Interval</div>
+              <div id="overlay-interval" class="srs-value">–</div>
+            </div>
+            <div>
+              <div class="srs-label">Next review</div>
+              <div id="overlay-next-review" class="srs-value">–</div>
+            </div>
+            <div class="review-actions compact">
+              <button
+                id="overlay-review-pass"
+                data-review-outcome="pass"
+                type="button"
+              >
+                Pass
+              </button>
+              <button
+                id="overlay-review-fail"
+                class="danger"
+                data-review-outcome="fail"
+                type="button"
+              >
+                Fail
+              </button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Backlinks</label>
+            <ul id="overlay-backlinks" class="backlink-list"></ul>
+          </div>
+        </div>
+
+        <footer class="sheet-footer">
+          <button id="overlay-delete" class="danger" type="button">
+            Delete Hex
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="nations-overlay" class="sheet hidden" aria-hidden="true">
+      <div class="sheet-content">
+        <header class="sheet-header">
+          <h2>Nations</h2>
+          <button id="nations-overlay-close" class="ghost-btn" type="button">
+            Close ✕
+          </button>
+        </header>
+        <div class="sheet-body">
+          <form id="nation-form" class="mini-form">
+            <input
+              type="text"
+              id="nation-name"
+              placeholder="Name"
+              required
+            />
+            <input type="color" id="nation-color" value="#3f51b5" />
+            <input type="text" id="nation-icon" placeholder="Icon" />
+            <button type="submit">Add</button>
+          </form>
+          <div id="nation-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <form id="journal-dock" class="journal-dock">
+      <label for="journal-text">Journal Capture</label>
+      <div class="dock-fields">
+        <textarea
+          id="journal-text"
+          rows="2"
+          placeholder="Log a quick thought with #tags..."
+        ></textarea>
+        <button type="submit">Capture</button>
+      </div>
+    </form>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
